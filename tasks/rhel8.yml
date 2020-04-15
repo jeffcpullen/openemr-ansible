@@ -13,6 +13,8 @@
 - name: Install Dependencies
   dnf:
     name:
+      - "httpd"
+      - "nodejs"
       - "php-mysqlnd"
       - "php-soap"
       - "php-gd"
