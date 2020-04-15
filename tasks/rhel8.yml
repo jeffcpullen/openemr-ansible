@@ -14,8 +14,11 @@
   dnf:
     name:
       - "php"
+      - "php-mbstring"
+      - "php-xml"
       - "nginx"
       - "php-fpm"
+      - "php-json"
       - "php-cli"
       - "httpd"
       - "nodejs"
