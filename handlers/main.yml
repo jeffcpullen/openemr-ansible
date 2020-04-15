@@ -1,0 +1,10 @@
+---
+# handlers file for openemr
+
+- name: Reboot Server
+  reboot:
+
+- name: restart apache
+  systemd:
+    name: "{{ httpd_service }}"
+    state: restarted

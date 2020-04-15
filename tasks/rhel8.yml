@@ -1,0 +1,170 @@
+---
+
+- name: Set hostname
+  hostname:
+    name: "{{ inventory_hostname }}"
+
+# Handle the installation of Dependencies
+
+- name: Enable module streams (backend)
+  dnf:
+    name:
+      - '@mariadb:10.3/server'
+    state: latest
+  when: node_type == "backend"
+
+- name: Install Dependencies
+  dnf:
+    name:
+      - 'firewalld'
+      - 'mariadb-server'
+      - 'python3-PyMySQL'
+    state: latest
+  when: node_type == "backend"
+
+- name: Enable module streams (frontend)
+  dnf:
+    name:
+      - '@httpd:2.4'
+      - '@nginx:1.14'
+      - '@nodejs:10'
+      - '@php:7.2'
+    state: latest
+  when: node_type == "frontend"
+
+- name: Install Dependencies
+  dnf:
+    name:
+      - "php-mysqlnd"
+      - "php-soap"
+      - "php-gd"
+      - "php-pecl-zip"
+      - "php-ldap"
+      - "wget"
+      - "git"
+      - "npm"
+      - "firewalld"
+      - "php-ldap"
+    state: present
+  when: node_type == "frontend"
+
+# Handle the firewalls
+- name: Start and enable firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: true
+  when: node_type == "backend"
+
+- name: Add mysql to the firewall
+  firewalld:
+    zone: public
+    service: mysql
+    permanent: yes
+    state: enabled
+    immediate: yes
+  when: node_type == "backend"
+
+# Start the database
+- name: Start and enable mariadb
+  service:
+    name: mariadb.service
+    state: started
+    enabled: True
+  when: node_type == "backend"
+
+- name: Configure mysql root login
+  mysql_user:
+    login_user: root
+    name: root
+    check_implicit_admin: yes
+    password: "{{ mysql_root_password }}"
+    host: "{{ mysql_root_host }}"
+    priv: "{{ mysql_root_priv }}"
+    state: present
+  when: node_type == "backend"
+
+- name: Add oemrusers group
+  group:
+    name: oemrusers
+    state: present
+  when: node_type == "frontend"
+
+- name: Switch apache group to oemrusers
+  lineinfile:
+    regexp: "^Group apache"
+    line: "Group oemrusers"
+    path: "{{ apache_root }}/etc/httpd/conf/httpd.conf"
+    state: present
+  when: node_type == "frontend"
+  notify: restart apache
+
+- name: Add DirectoryIndex index.php
+  lineinfile:
+    regexp: "    DirectoryIndex index.html"
+    line: "    DirectoryIndex index.html index.php"
+    path: "{{ apache_root }}/etc/httpd/conf/httpd.conf"
+    state: present
+  when: node_type == "frontend"
+  notify: restart apache
+
+- name: Deploy phpinfo template
+  template:
+    src: phpinfo.php.j2
+    dest: "{{ web_document_root }}/phpinfo.php"
+  when: node_type == "frontend"
+  notify: restart apache
+
+- name: Deploy php.ini template
+  template:
+    src: php.ini.j2
+    dest: "{{ apache_root }}/etc/php.ini"
+  when: node_type == "frontend"
+  notify: restart apache
+
+- name: Download and unarchive OpenEMR release
+  unarchive:
+    src: "{{ download_openemr_link }}"
+    dest: "{{ web_document_root }}"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    creates: /var/www/html/README.md
+  when: node_type == "frontend"
+  notify: restart apache
+
+- name: Start and enable apache
+  systemd:
+    name: "{{ httpd_service }}"
+    state: started
+    enabled: true
+  when: node_type == "frontend"
+
+- name: Start and enable firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: true
+  when: node_type == "frontend"
+
+- name: Add http to the firewall
+  firewalld:
+    zone: public
+    service: http
+    permanent: yes
+    state: enabled
+    immediate: yes
+  when: node_type == "frontend"
+
+- name: Toggle httpd_unified selinux boolean
+  seboolean:
+    name: httpd_unified
+    state: yes
+  when: node_type == "frontend"
+
+- name: Chown /var/lib/php/session to root:oemrusers
+  file:
+    path: "{{ php_root }}/lib/php/session"
+    owner: root
+    group: oemrusers
+  ignore_errors: true
+  when: node_type == "frontend"

@@ -1,0 +1,17 @@
+---
+
+- name: Run composer install
+  composer:
+    command: install
+    working_dir: "{{ web_document_root }}"
+
+- name: Run npm install
+  npm:
+    path: "{{ web_document_root }}"
+    global: yes
+
+- name: Run composer autoload
+  composer:
+    command: dump-autoload
+    optimize_autoloader: True
+    working_dir: "{{ web_document_root }}"

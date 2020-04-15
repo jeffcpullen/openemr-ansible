@@ -1,0 +1,12 @@
+---
+
+- name: Deploy autoconfigure php file
+  template:
+    src: auto_configure.php
+    dest: /var/www/html/auto_configure.php 
+
+- name: Run autoconfiguration script
+  command: "php auto_configure.php -f {{ openemr_auto_configuration }}"
+  args:
+    chdir: /var/www/html/
+    creates: '/var/www/html/sites/default/sqlconf.php'
