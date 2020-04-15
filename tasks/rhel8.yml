@@ -13,6 +13,10 @@
 - name: Install Dependencies
   dnf:
     name:
+      - "php"
+      - "nginx"
+      - "php-fpm"
+      - "php-cli"
       - "httpd"
       - "nodejs"
       - "php-mysqlnd"
