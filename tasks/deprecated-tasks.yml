@@ -1,0 +1,51 @@
+- name: Enable module streams (backend)
+  dnf:
+    name:
+      - '@mariadb:10.3/server'
+    state: latest
+  when: node_type == "backend"
+
+- name: Install Dependencies
+  dnf:
+    name:
+      - 'firewalld'
+      - 'mariadb-server'
+      - 'python3-PyMySQL'
+    state: latest
+  when: node_type == "backend"
+
+  # Handle the firewalls
+- name: Start and enable firewalld
+  systemd:
+    name: firewalld
+    state: started
+    enabled: true
+  when: node_type == "backend"
+
+- name: Add mysql to the firewall
+  firewalld:
+    zone: public
+    service: mysql
+    permanent: yes
+    state: enabled
+    immediate: yes
+  when: node_type == "backend"
+
+# Start the database
+- name: Start and enable mariadb
+  service:
+    name: mariadb.service
+    state: started
+    enabled: True
+  when: node_type == "backend"
+
+- name: Configure mysql root login
+  mysql_user:
+    login_user: root
+    name: root
+    check_implicit_admin: yes
+    password: "{{ mysql_root_password }}"
+    host: "{{ mysql_root_host }}"
+    priv: "{{ mysql_root_priv }}"
+    state: present
+  when: node_type == "backend"
