@@ -3,7 +3,8 @@
 - name: Deploy autoconfigure php file
   template:
     src: auto_configure.php
-    dest: /var/www/html/auto_configure.php 
+    dest: /var/www/html/auto_configure.php
+  notify: restart apache
 
 - name: Fix ownership of web root
   file:
@@ -11,9 +12,11 @@
     owner: apache
     group: oemrusers
     recurse: yes
+  notify: restart apache
 
 - name: Run autoconfiguration script
   command: "php auto_configure.php -f {{ openemr_auto_configuration }}"
   args:
     chdir: /var/www/html/
   when: autoconfigure is defined and autoconfigure
+  notify: restart apache

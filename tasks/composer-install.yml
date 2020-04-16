@@ -1,5 +1,18 @@
 ---
 
+- name: Fix ownership of web root
+  file:
+    path: /var/www/html
+    owner: apache
+    group: oemrusers
+    mode: 0775
+  notify: restart apache
+
+- name: Add oemruser user
+  user:
+    name: oemruser
+    group: oemrusers
+
 - name: Run composer install
   composer:
     command: install
@@ -10,7 +23,7 @@
     path: "{{ web_document_root }}"
     global: no
   become: yes
-  become_user: apache
+  become_user: oemruser
 
 - name: Run composer autoload
   composer:
