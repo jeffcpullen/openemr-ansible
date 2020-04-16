@@ -8,7 +8,9 @@
 - name: Run npm install
   npm:
     path: "{{ web_document_root }}"
-    global: yes
+    global: no
+  become: yes
+  become_user: apache
 
 - name: Run composer autoload
   composer:

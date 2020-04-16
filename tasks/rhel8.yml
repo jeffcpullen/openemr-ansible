@@ -98,12 +98,17 @@
 
 - name: Toggle httpd_unified selinux boolean
   seboolean:
-    name: httpd_unified
+    name: "{{ item }}"
+    persistent: yes
     state: yes
+  loop:
+    - httpd_execmem 
+    - httpd_unified
+    - httpd_can_network_connect
 
 - name: Chown /var/lib/php/session to root:oemrusers
   file:
     path: "{{ php_root }}/lib/php/session"
-    owner: root
+    owner: apache
     group: oemrusers
   ignore_errors: true
