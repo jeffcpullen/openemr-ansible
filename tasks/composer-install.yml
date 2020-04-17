@@ -8,6 +8,13 @@
     mode: 0775
   notify: restart apache
 
+- name: Fix permissions of /var/www/html/node_modules
+  file:
+    path: /var/www/html/node_modules
+    owner: apache
+    group: oemrusers
+    mode: 0775
+
 - name: Add oemruser user
   user:
     name: oemruser
@@ -17,18 +24,23 @@
   composer:
     command: install
     working_dir: "{{ web_document_root }}"
+  become: yes
 
 - name: Run npm install
   npm:
     path: "{{ web_document_root }}"
-    global: no
+    global: yes
     unsafe_perm: yes
   become: yes
+  become_user: oemruser
 
 - name: Run npm build
   command: /usr/bin/npm run build
+  args:
     chdir: "{{ web_document_root }}"
     creates: "{{ web_document_root }}/public"
+  become: yes
+  become_user: oemruser
 
 - name: Run composer autoload
   composer:
