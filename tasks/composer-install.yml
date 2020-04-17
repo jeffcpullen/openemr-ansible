@@ -22,8 +22,13 @@
   npm:
     path: "{{ web_document_root }}"
     global: no
+    unsafe_perm: yes
   become: yes
-  become_user: oemruser
+
+- name: Run npm build
+  comnmand: /usr/bin/npm run build
+    chdir: "{{ web_document_root }}"
+    creates: "{{ web_document_root }}/public"
 
 - name: Run composer autoload
   composer:
