@@ -26,7 +26,7 @@
   become: yes
 
 - name: Run npm build
-  comnmand: /usr/bin/npm run build
+  command: /usr/bin/npm run build
     chdir: "{{ web_document_root }}"
     creates: "{{ web_document_root }}/public"
 
