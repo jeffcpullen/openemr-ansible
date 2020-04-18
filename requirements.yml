@@ -1,0 +1,4 @@
+---
+  # Install vm creation role
+roles:
+- name: geerlingguy.composer

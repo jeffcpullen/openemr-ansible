@@ -48,3 +48,5 @@
     command: dump-autoload
     optimize_autoloader: True
     working_dir: "{{ web_document_root }}"
+  tags:
+    - molecule-idempotence-notest

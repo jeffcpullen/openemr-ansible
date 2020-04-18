@@ -1,6 +1,11 @@
 ---
 
 # Handle the installation of Dependencies
+- name: Disable EPEL
+  yum_repository:
+    name: epel
+    state: absent
+
 - name: Enable module streams
   dnf:
     name:
@@ -32,6 +37,8 @@
       - "npm"
       - "firewalld"
       - "php-ldap"
+      - "python3-libsemanage"
+      - "sudo"
     state: latest
 
 - name: Add oemrusers group
@@ -82,19 +89,11 @@
     state: started
     enabled: true
 
-- name: Start and enable firewalld
-  systemd:
-    name: firewalld
-    state: started
-    enabled: true
-
-- name: Add http to the firewall
-  firewalld:
-    zone: public
-    service: http
-    permanent: yes
-    state: enabled
-    immediate: yes
+- name: Check if selinux is enabled
+  command: getenforce
+  register: sestatus
+  changed_when: false
+  failed_when: false
 
 - name: Toggle httpd_unified selinux boolean
   seboolean:
@@ -105,6 +104,7 @@
     - httpd_execmem 
     - httpd_unified
     - httpd_can_network_connect
+  when: sestatus.stdout is defined and '"Enforcing" in sestatus.stdout'
 
 - name: Chown /var/lib/php/session to root:oemrusers
   file:

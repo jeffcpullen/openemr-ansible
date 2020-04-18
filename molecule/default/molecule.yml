@@ -1,0 +1,22 @@
+---
+dependency:
+  name: galaxy
+  options:
+    role-file: requirements.yml
+lint: |
+  set -e
+  yamllint .
+driver:
+  name: podman
+platforms:
+  - name: instance
+    image: registry.access.redhat.com/ubi8-init
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: "/lib/systemd/systemd"
+provisioner:
+  name: ansible
+verifier:
+  name: ansible
