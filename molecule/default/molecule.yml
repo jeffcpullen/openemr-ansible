@@ -9,8 +9,15 @@ lint: |
 driver:
   name: podman
 platforms:
-  - name: instance
+  - name: ubi8
     image: registry.access.redhat.com/ubi8-init
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: "/lib/systemd/systemd"
+  - name: centos8
+    image: centos:8
     pre_build_image: true
     privileged: true
     volumes:
