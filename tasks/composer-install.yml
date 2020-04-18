@@ -14,7 +14,7 @@
     owner: apache
     group: oemrusers
     mode: 0775
-    state: touch
+    state: directory
 
 - name: Add oemruser user
   user:
