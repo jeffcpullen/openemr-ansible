@@ -18,5 +18,5 @@
   command: "php auto_configure.php -f {{ openemr_auto_configuration }}"
   args:
     chdir: /var/www/html/
-  when: autoconfigure is defined and autoconfigure
+  when: autoconfigure is defined
   notify: restart apache
