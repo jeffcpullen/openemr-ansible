@@ -4,7 +4,6 @@
   vars:
     autoconfigure: 'true'
     mysql_host_fqdn: 'localhost'
-    mysql_root_password: 
   tasks:
 
   - name: Clean DNF cache (RHEL Based)

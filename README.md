@@ -15,10 +15,6 @@ Role Variables
 Database Configuration
 ```
 mysql_host_fqdn: 'db-example.example.com'
-mysql_root_user: 'root'
-mysql_root_password: 'example-password'
-mysql_root_host: "%"
-mysql_root_priv: "*.*:ALL,GRANT"
 mysql_openemr_db_name: 'openemr'
 mysql_openemr_user: 'openemr'
 mysql_openemr_user_password: 'example-password'

@@ -19,10 +19,6 @@ php_root: /var/
 
 
 mysql_host_fqdn: 'db-example.example.com'
-mysql_root_user: 'root'
-mysql_root_password: 'example-password'
-mysql_root_host: "%"
-mysql_root_priv: "*.*:ALL,GRANT"
 mysql_openemr_db_name: 'openemr'
 mysql_openemr_user: 'openemr'
 mysql_openemr_user_password: 'example-password'
@@ -34,7 +30,7 @@ mysql_openemr_db_encoding: 'utf8'
 mysql_openemr_db_collation: 'utf8_general_ci'
 
 # Autoconfiguration string
-openemr_auto_configuration: "server={{ mysql_host_fqdn }} root={{ mysql_root_user }} rootpass={{ mysql_root_password }} loginhost='{{ mysql_root_host }}' login={{ mysql_openemr_user }} pass='{{ mysql_openemr_user_password }}' dbname='{{ mysql_openemr_db_name }}' iuser='{{ mysql_openemr_initial_user }}' iuserpass='{{ mysql_openemr_initial_user_password }}'"
+openemr_auto_configuration: "server={{ mysql_host_fqdn }} login={{ mysql_openemr_user }} pass='{{ mysql_openemr_user_password }}' dbname='{{ mysql_openemr_db_name }}' iuser='{{ mysql_openemr_initial_user }}' iuserpass='{{ mysql_openemr_initial_user_password }}'"
 
 # Download link
 #download_openemr_link: "https://github.com/openemr/openemr/archive/v5_0_2_1.tar.gz"
