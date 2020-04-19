@@ -1,12 +1,12 @@
 openemr-ansible
 =========
 
-This role installs OpenEMR releases to RHEL 8 and CentOS 8 systems. 
+This role installs OpenEMR releases to RHEL 8 and CentOS 8 systems. It will also run through the OpenEMR database population when the variable 'autoconfigure' is defined. If you'd rather not have the script configure the database, do not define autoconfigure and navigate to http://<youServer>/setup.php to configure it yourself.
 
 Requirements
 ------------
 
-1. OpenEMR requires a MariaDB / Mysql database to connect to. This role does not setup or configure the database.
+1. OpenEMR requires a MariaDB / Mysql database to connect to. This role does not setup or create the database.
 2. Ability to download to sourceforge.net (download links can be configured if it needs to be staged elsewhere)
 
 Role Variables
