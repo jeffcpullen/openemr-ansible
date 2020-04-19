@@ -20,15 +20,18 @@ platforms:
       - 80
     published_ports:
       - 0.0.0.0:8080:80/tcp
+  - name: centos8
+    image: centos:8
+    pre_build_image: true
+    privileged: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    command: "/usr/sbin/init"
+    exposed_ports:
+      - 80
+    published_ports:
+      - 0.0.0.0:8081:80/tcp
 provisioner:
   name: ansible
 verifier:
   name: ansible
-
-  # - name: centos8
-  #   image: centos:8
-  #   pre_build_image: true
-  #   privileged: true
-  #   volumes:
-  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
-  #   command: "/usr/sbin/init"
