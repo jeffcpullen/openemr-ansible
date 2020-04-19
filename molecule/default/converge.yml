@@ -1,7 +1,27 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    autoconfigure: 'true'
+    mysql_host_fqdn: 'localhost'
+    mysql_root_password: 
+    openemr_auto_configuration: "server={{ mysql_host_fqdn }} root={{ mysql_root_user }} loginhost='{{ mysql_root_host }}' login={{ mysql_openemr_user }} dbname='{{ mysql_openemr_db_name }}' iuser='{{ mysql_openemr_initial_user }}' iuserpass='{{ mysql_openemr_initial_user_password }}'"
+  roles:
+  - name: "diodonfrost.mariadb"
+
   tasks:
-    - name: "Include openemr-ansible"
-      include_role:
-        name: "openemr-ansible"
+
+  - name: Create a new database with name 'openemr'
+    mysql_db:
+      name: "{{ mysql_openemr_db_name }}"
+      encoding: "{{ mysql_openemr_db_encoding }}"
+      collation: "{{ mysql_openemr_db_collation }}"
+      state: present
+
+  - name: Testing openemr-ansible role
+    import_role:
+      name: "openemr-ansible"
+    tags:
+      - autoconfigure
+
+

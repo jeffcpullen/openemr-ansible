@@ -20,3 +20,5 @@
     chdir: /var/www/html/
   when: autoconfigure is defined
   notify: restart apache
+  tags:
+    - autoconfigure
