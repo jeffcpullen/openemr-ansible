@@ -5,10 +5,16 @@
     autoconfigure: 'true'
     mysql_host_fqdn: 'localhost'
     mysql_root_password: 
-  roles:
-  - name: "diodonfrost.mariadb"
-
   tasks:
+
+  - name: Clean DNF cache (RHEL Based)
+    file:
+      path: /var/cache/dnf
+      state: absent
+
+  - name: Install database (for testing)
+    import_role:
+      name: "diodonfrost.mariadb"
 
   - name: Create a new database with name 'openemr'
     mysql_db:

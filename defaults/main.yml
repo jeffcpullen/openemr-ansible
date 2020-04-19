@@ -27,7 +27,7 @@ mysql_openemr_db_name: 'openemr'
 mysql_openemr_user: 'openemr'
 mysql_openemr_user_password: 'example-password'
 mysql_openemr_user_host: "%"
-mysql_openemr_user_priv: "*.*:ALL,GRANT"
+mysql_openemr_user_priv: "{{ mysql_openemr_db_name }}.*:ALL,GRANT"
 mysql_openemr_initial_user: 'user-example'
 mysql_openemr_initial_user_password: 'example-password'
 mysql_openemr_db_encoding: 'utf8'

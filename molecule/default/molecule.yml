@@ -2,7 +2,7 @@
 dependency:
   name: galaxy
   options:
-    role-file: requirements.yml
+    role-file: molecule-requirements.yml
 lint: |
   set -e
   yamllint .

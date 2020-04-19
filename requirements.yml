@@ -1,5 +1,0 @@
----
-  # Install vm creation role
-roles:
-- name: geerlingguy.composer
-- name: diodonfrost.mariadb

@@ -1,0 +1,6 @@
+---
+  # Install vm creation role
+roles:
+- name: diodonfrost.mariadb
+# No longer needed after switching to release install
+#- name: geerlingguy.composer
