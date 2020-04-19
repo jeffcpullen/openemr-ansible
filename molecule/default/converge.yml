@@ -5,7 +5,6 @@
     autoconfigure: 'true'
     mysql_host_fqdn: 'localhost'
     mysql_root_password: 
-    openemr_auto_configuration: "server={{ mysql_host_fqdn }} root={{ mysql_root_user }} loginhost='{{ mysql_root_host }}' login={{ mysql_openemr_user }} dbname='{{ mysql_openemr_db_name }}' iuser='{{ mysql_openemr_initial_user }}' iuserpass='{{ mysql_openemr_initial_user_password }}'"
   roles:
   - name: "diodonfrost.mariadb"
 
@@ -18,10 +17,16 @@
       collation: "{{ mysql_openemr_db_collation }}"
       state: present
 
+  - name: Create openemr database user
+    mysql_user:
+      name: "{{ mysql_openemr_user }}"
+      password: "{{ mysql_openemr_user_password }}"
+      encrypted: no
+      priv: "{{ mysql_openemr_db_name }}.*:ALL"
+      state: present
+
   - name: Testing openemr-ansible role
     import_role:
       name: "openemr-ansible"
     tags:
       - autoconfigure
-
-

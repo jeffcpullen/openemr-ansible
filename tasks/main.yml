@@ -8,12 +8,23 @@
   include_tasks: rhel8.yml
   when: (ansible_distribution == "RedHat" or ansible_distribution == "CentOS") and ansible_distribution_major_version == "8"
 
-- name: Deploy composer
-  include_role:
-    name: geerlingguy.composer
+- name: Add user and group
+  include_tasks: users.yml
 
-- name: Run composer and npm
-  include_tasks: composer-install.yml
+- name: Install Apache
+  include_tasks: apache.yml
+
+- name: Install OpenEMR
+  include_tasks: openemr.yml
+
+# No longer needed since downloading from sourceforge
+# - name: Deploy composer
+#   include_role:
+#     name: geerlingguy.composer
+
+# No longer needed since downloading from sourceforge
+# - name: Run composer and npm
+#   include_tasks: composer-install.yml
 
 - name: Run auto configuration
   include_tasks: configure.yml

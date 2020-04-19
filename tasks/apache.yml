@@ -1,0 +1,38 @@
+---
+
+- name: Switch apache group to oemrusers
+  lineinfile:
+    regexp: "^Group apache"
+    line: "Group oemrusers"
+    path: "{{ apache_root }}/etc/httpd/conf/httpd.conf"
+    state: present
+  notify: restart apache
+
+- name: Add DirectoryIndex index.php
+  lineinfile:
+    regexp: "    DirectoryIndex index.html"
+    line: "    DirectoryIndex index.html index.php"
+    path: "{{ apache_root }}/etc/httpd/conf/httpd.conf"
+    state: present
+  notify: restart apache
+
+- name: Fix ownership of web root
+  file:
+    path: /var/www/html
+    owner: apache
+    group: oemrusers
+    mode: 0775
+  notify: restart apache
+
+- name: Start and enable apache
+  systemd:
+    name: "{{ httpd_service }}"
+    state: started
+    enabled: true
+
+- name: Chown /var/lib/php/session to root:oemrusers
+  file:
+    path: "{{ php_root }}/lib/php/session"
+    owner: apache
+    group: oemrusers
+  ignore_errors: true

@@ -1,0 +1,21 @@
+---
+- name: Deploy phpinfo template
+  template:
+    src: phpinfo.php.j2
+    dest: "{{ web_document_root }}/phpinfo.php"
+  notify: restart apache
+
+- name: Deploy php.ini template
+  template:
+    src: php.ini.j2
+    dest: "{{ apache_root }}/etc/php.ini"
+  notify: restart apache
+
+- name: Download and unarchive OpenEMR release
+  unarchive:
+    src: "{{ download_openemr_link }}"
+    dest: "{{ web_document_root }}"
+    remote_src: yes
+    extra_opts: [--strip-components=1]
+    creates: /var/www/html/README.md
+  notify: restart apache

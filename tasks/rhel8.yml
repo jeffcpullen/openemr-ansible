@@ -41,54 +41,6 @@
       - "sudo"
     state: latest
 
-- name: Add oemrusers group
-  group:
-    name: oemrusers
-    state: present
-
-- name: Switch apache group to oemrusers
-  lineinfile:
-    regexp: "^Group apache"
-    line: "Group oemrusers"
-    path: "{{ apache_root }}/etc/httpd/conf/httpd.conf"
-    state: present
-  notify: restart apache
-
-- name: Add DirectoryIndex index.php
-  lineinfile:
-    regexp: "    DirectoryIndex index.html"
-    line: "    DirectoryIndex index.html index.php"
-    path: "{{ apache_root }}/etc/httpd/conf/httpd.conf"
-    state: present
-  notify: restart apache
-
-- name: Deploy phpinfo template
-  template:
-    src: phpinfo.php.j2
-    dest: "{{ web_document_root }}/phpinfo.php"
-  notify: restart apache
-
-- name: Deploy php.ini template
-  template:
-    src: php.ini.j2
-    dest: "{{ apache_root }}/etc/php.ini"
-  notify: restart apache
-
-- name: Download and unarchive OpenEMR release
-  unarchive:
-    src: "{{ download_openemr_link }}"
-    dest: "{{ web_document_root }}"
-    remote_src: yes
-    extra_opts: [--strip-components=1]
-    creates: /var/www/html/README.md
-  notify: restart apache
-
-- name: Start and enable apache
-  systemd:
-    name: "{{ httpd_service }}"
-    state: started
-    enabled: true
-
 - name: Check if selinux is enabled
   command: getenforce
   register: sestatus
@@ -105,10 +57,3 @@
     - httpd_unified
     - httpd_can_network_connect
   when: sestatus.stdout is defined and '"Enforcing" in sestatus.stdout'
-
-- name: Chown /var/lib/php/session to root:oemrusers
-  file:
-    path: "{{ php_root }}/lib/php/session"
-    owner: apache
-    group: oemrusers
-  ignore_errors: true

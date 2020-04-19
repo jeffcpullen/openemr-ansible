@@ -1,13 +1,5 @@
 ---
 
-- name: Fix ownership of web root
-  file:
-    path: /var/www/html
-    owner: apache
-    group: oemrusers
-    mode: 0775
-  notify: restart apache
-
 - name: Fix permissions of /var/www/html/node_modules
   file:
     path: /var/www/html/node_modules
@@ -15,11 +7,6 @@
     group: oemrusers
     mode: 0775
     state: directory
-
-- name: Add oemruser user
-  user:
-    name: oemruser
-    group: oemrusers
 
 - name: Run composer install
   composer:

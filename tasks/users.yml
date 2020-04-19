@@ -1,0 +1,10 @@
+---
+- name: Add oemrusers group
+  group:
+    name: oemrusers
+    state: present
+
+- name: Add oemruser user
+  user:
+    name: oemruser
+    group: oemrusers
