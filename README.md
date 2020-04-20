@@ -1,6 +1,8 @@
 openemr-ansible
 =========
 
+[![Build Status](https://travis-ci.org/jeffcpullen/openemr-ansible.svg?branch=master)](https://travis-ci.org/jeffcpullen/openemr-ansible)
+
 This role installs OpenEMR releases to RHEL 8 and CentOS 8 systems. It will also run through the OpenEMR database population when the variable 'autoconfigure' is defined. If you'd rather not have the script configure the database, do not define autoconfigure and navigate to http://<youServer>/setup.php to configure it yourself.
 
 Requirements
