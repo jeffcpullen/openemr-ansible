@@ -5,9 +5,9 @@ env:
 language: python
 services: []
 before_install:
-  - sudo dnf -y update 
+  - dnf -y update 
 install:
-  - sudo yum install -y podman git gcc python3-pip python3-devel openssl-devel python3-libselinux
+  - yum install -y podman git gcc python3-pip python3-devel openssl-devel python3-libselinux
   - python3 -m venv ~/molecule
   - source ~/molecule/bin/activate
   - python3 -m pip install 'molecule[docker]'
