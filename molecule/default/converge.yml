@@ -10,6 +10,8 @@
     file:
       path: /var/cache/dnf
       state: absent
+    tags:
+    - molecule-idempotence-notest
 
   - name: Install database (for testing)
     import_role:

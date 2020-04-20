@@ -12,3 +12,5 @@
     permanent: yes
     state: enabled
     immediate: yes
+  tags:
+    - molecule-idempotence-notest

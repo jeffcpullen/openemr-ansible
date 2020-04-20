@@ -22,3 +22,4 @@
   notify: restart apache
   tags:
     - autoconfigure
+    - molecule-idempotence-notest
