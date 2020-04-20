@@ -7,7 +7,7 @@ lint: |
   set -e
   yamllint .
 driver:
-  name: podman
+  name: docker
 platforms:
   - name: ubi8
     image: registry.access.redhat.com/ubi8-init
