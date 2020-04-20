@@ -9,17 +9,17 @@ lint: |
 driver:
   name: docker
 platforms:
-  - name: ubi8
-    image: registry.access.redhat.com/ubi8-init
-    pre_build_image: true
-    privileged: true
-    volumes:
-      - /sys/fs/cgroup:/sys/fs/cgroup:ro
-    command: "/usr/sbin/init"
-    exposed_ports:
-      - 80
-    published_ports:
-      - 0.0.0.0:8080:80/tcp
+  # - name: ubi8
+  #   image: registry.access.redhat.com/ubi8-init
+  #   pre_build_image: true
+  #   privileged: true
+  #   volumes:
+  #     - /sys/fs/cgroup:/sys/fs/cgroup:ro
+  #   command: "/usr/sbin/init"
+  #   exposed_ports:
+  #     - 80
+  #   published_ports:
+  #     - 0.0.0.0:8080:80/tcp
   - name: centos8
     image: centos:8
     pre_build_image: true
