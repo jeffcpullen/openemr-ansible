@@ -31,6 +31,7 @@ platforms:
     command: "/usr/sbin/init"
     exposed_ports:
       - 80
+    network_mode: host
     published_ports:
       - 0.0.0.0:8081:80/tcp
   - name: mariadb
@@ -39,6 +40,7 @@ platforms:
       - database
     exposed_ports:
       - 3306
+    network_mode: host
     published_ports:
       - 0.0.0.0:3306:3306/tcp
     env:
