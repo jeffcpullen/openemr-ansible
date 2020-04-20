@@ -10,9 +10,13 @@
     file:
       path: /var/cache/dnf
       state: absent
-    when: 'database' not in group_names
     tags:
-      - molecule-idempotence-notest
+    - molecule-idempotence-notest
+    when: 'database' not in group_names
+
+  # - name: Install database (for testing)
+  #   import_role:
+  #     name: "diodonfrost.mariadb"
 
   - name: Create a new database with name 'openemr'
     mysql_db:
