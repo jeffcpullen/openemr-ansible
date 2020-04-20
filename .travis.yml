@@ -5,11 +5,13 @@ env:
 language: python
 services: []
 before_install:
-  - sudo dnf -y clean all
   - sudo dnf -y update 
 install:
-  - sudo dnf -y install git
+  - sudo yum install -y podman git gcc python3-pip python3-devel openssl-devel python3-libselinux
+  - python3 -m venv ~/molecule
+  - source ~/molecule/bin/activate
   - python3 -m pip install 'molecule[docker]'
+  - python3 -m pip install --user "molecule[lint]"
   # - python3 -m pip install required driver (e.g. docker, shade, boto, apache-libcloud)
 script:
   - molecule test
