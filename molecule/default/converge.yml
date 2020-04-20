@@ -10,29 +10,29 @@
     file:
       path: /var/cache/dnf
       state: absent
-    when: "'database' not in group_names"
+    when: "'database' not in {{ group_names }}"
     tags: molecule-idempotence-notest
 
-  # - name: Create a new database with name 'openemr'
-  #   mysql_db:
-  #     name: "{{ mysql_openemr_db_name }}"
-  #     encoding: "{{ mysql_openemr_db_encoding }}"
-  #     collation: "{{ mysql_openemr_db_collation }}"
-  #     state: present
-  #   when: "'database' in group_names"
+  - name: Create a new database with name 'openemr'
+    mysql_db:
+      name: "{{ mysql_openemr_db_name }}"
+      encoding: "{{ mysql_openemr_db_encoding }}"
+      collation: "{{ mysql_openemr_db_collation }}"
+      state: present
+    when: "'database' in {{ group_names }}"
 
-  # - name: Create openemr database user
-  #   mysql_user:
-  #     name: "{{ mysql_openemr_user }}"
-  #     password: "{{ mysql_openemr_user_password }}"
-  #     encrypted: no
-  #     priv: "{{ mysql_openemr_db_name }}.*:ALL"
-  #     state: present
-  #   when: "'database' in group_names"
+  - name: Create openemr database user
+    mysql_user:
+      name: "{{ mysql_openemr_user }}"
+      password: "{{ mysql_openemr_user_password }}"
+      encrypted: no
+      priv: "{{ mysql_openemr_db_name }}.*:ALL"
+      state: present
+    when: "'database' in {{ group_names }}"
 
   - name: Testing openemr-ansible role
     import_role:
       name: "openemr-ansible"
     tags:
       - autoconfigure
-    when: "'database' not in group_names"
+    when: "'database' not in {{ group_names }}"

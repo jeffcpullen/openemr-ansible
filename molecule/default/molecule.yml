@@ -43,9 +43,6 @@ platforms:
       - 0.0.0.0:3306:3306/tcp
     env:
       MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: openemr
-      MYSQL_USER: openemr
-      MYSQL_PASSWORD: 'example-password'
 provisioner:
   name: ansible
 verifier:
