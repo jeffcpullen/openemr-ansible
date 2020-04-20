@@ -1,10 +1,15 @@
 ---
 - name: Converge
   hosts: all
+  gather_facts: no
   vars:
     autoconfigure: 'true'
     mysql_host_fqdn: 'localhost'
   tasks:
+
+  - name: Gather facts on openemr hosts
+    setup:
+    when: "'database' not in group_names"
 
   - name: Clean DNF cache (RHEL Based)
     file:
